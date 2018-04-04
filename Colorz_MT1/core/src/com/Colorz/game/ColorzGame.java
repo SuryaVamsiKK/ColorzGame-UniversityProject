@@ -5,23 +5,38 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.Colorz.game.States.CreditsState;
+import com.Colorz.game.ClassDefinations.GameStatemanager;
+import com.Colorz.game.States.Menu;
 
 public class ColorzGame extends ApplicationAdapter {
-	SpriteBatch batch;
-	Texture img;
-	
+
+	public static final int WIDTH = 1080;
+	public static final int HEIGHT = 1920;
+
+	public static final String TITLE = "ColorZ";
+	private GameStatemanager gsm;
+	private SpriteBatch batch;
+
 	@Override
-	public void create () {
+	public void create ()
+	{
 		batch = new SpriteBatch();
-		img = new Texture("badlogic.jpg");
+		gsm = new GameStatemanager();
+		Gdx.gl.glClearColor(1, 0, 0, 1);
+		gsm.push(new Menu(gsm));
 	}
 
 	@Override
-	public void render () {
-		Gdx.gl.glClearColor(1, 0, 0, 1);
+	public void render ()
+	{
 		Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
-		batch.begin();
-		batch.draw(img, 0, 0);
-		batch.end();
+		gsm.update(Gdx.graphics.getDeltaTime());
+		gsm.render(batch);
+	}
+
+	@Override
+	public void dispose () {
+		batch.dispose();
 	}
 }
