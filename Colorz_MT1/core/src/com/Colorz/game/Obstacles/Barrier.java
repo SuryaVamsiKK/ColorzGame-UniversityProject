@@ -2,8 +2,8 @@ package com.Colorz.game.Obstacles;
 
 import com.Colorz.game.ColorzGame;
 import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector3;
-import com.sun.org.apache.xpath.internal.operations.String;
 
 public class Barrier {
 
@@ -14,8 +14,9 @@ public class Barrier {
     private Vector3 startScale;
     private float hSpeed;
     private float vSpeed;
-    private java.lang.String ID;
-    private java.lang.String path;
+    public java.lang.String ID;
+    public java.lang.String path;
+    private Rectangle col;
 
     private Texture barrier;
 
@@ -31,10 +32,13 @@ public class Barrier {
         velocity = new Vector3(0, 0, 0);
         path = skin + ColorzGame.TextureFormate;
         barrier = new Texture(path);
+        col = new Rectangle(x ,y, scaleX, scaleY);
     }
 
     public void Update(float dt)
     {
+        col.setPosition(position.x, position.y);
+
         if(position.y < 0)
         {
             position.y = startPos.y;
@@ -51,13 +55,38 @@ public class Barrier {
         return barrier;
     }
 
+    public void SetTexture(String skin)
+    {
+        if(barrier != null)
+        {
+            barrier.dispose();
+        }
+        path = skin + ColorzGame.TextureFormate;
+        ID = skin;
+        barrier = new Texture(path);
+    }
+
     public Vector3 GetPosition()
     {
         return position;
+    }
+    public void  SetPosition(Vector3 pos)
+    {
+        position = pos;
     }
 
     public Vector3 GetScale()
     {
         return scale;
+    }
+
+    public void  SetScale(Vector3 scl)
+    {
+        scale = scl;
+    }
+
+    public Rectangle getCollider()
+    {
+        return col;
     }
 }
