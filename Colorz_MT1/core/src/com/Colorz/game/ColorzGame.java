@@ -11,8 +11,9 @@ import com.Colorz.game.States.Menu;
 
 public class ColorzGame extends ApplicationAdapter {
 
-	public static final int WIDTH = 1080;
-	public static final int HEIGHT = 1920;
+	public static final int WIDTH = 607;
+	public static final int HEIGHT = 1080;
+	public static String TextureFormate = ".jpg";
 
 	public static final String TITLE = "ColorZ";
 	private GameStatemanager gsm;

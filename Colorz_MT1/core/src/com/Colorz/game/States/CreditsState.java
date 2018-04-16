@@ -1,6 +1,7 @@
 package com.Colorz.game.States;
 
 
+import com.Colorz.game.ColorzGame;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.Colorz.game.ClassDefinations.GameStatemanager;
@@ -32,7 +33,7 @@ public class CreditsState extends state {
     @Override
     public void render(SpriteBatch sb) {
         sb.begin();
-        sb.draw(bG, 0, 0, 640, 480);
+        sb.draw(bG, 0, 0, ColorzGame.WIDTH, ColorzGame.HEIGHT);
         sb.end();
 
     }

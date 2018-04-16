@@ -30,7 +30,7 @@ public class Menu extends state {
 
         if(Gdx.input.justTouched())
         {
-            gsm.set(new CreditsState(gsm));
+            gsm.set(new playState(gsm));
             dispose();
         }
     }
