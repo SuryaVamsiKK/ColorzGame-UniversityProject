@@ -8,7 +8,7 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.Colorz.game.ClassDefinations.GameStatemanager;
 import com.Colorz.game.ClassDefinations.state;
-import com.badlogic.gdx.input.RemoteInput;
+import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Vector3;
 
 public class playState extends state{
@@ -21,6 +21,8 @@ public class playState extends state{
     private float playerY;
     private float playerBX;
     private float playerBY;
+    private int rad = 0;
+    private  boolean block = false;
 
     public playState(GameStatemanager gsm) {
         super(gsm);
@@ -28,15 +30,41 @@ public class playState extends state{
         play = new Player(0,0,50, 50, "Red");
         BG = new Texture("Black.jpg");
         player = new Texture("Red.jpg");
-       // cam.setToOrtho(false, ColorzGame.WIDTH / 2, ColorzGame.HEIGHT / 2);
+      //  cam.setToOrtho(false, ColorzGame.WIDTH / 2, ColorzGame.HEIGHT / 2);
 
     }
 
     @Override
     protected void handleInput() {
 
+        rad = MathUtils.random(5);
+        if(!Gdx.input.isTouched())
+        {
+            block = false;
+        }
         if(Gdx.input.isTouched())
         {
+            if(block == false) {
+                if (rad == 0) {
+                    play.SetTexture("Yellow");
+                }
+                if (rad == 1) {
+                    play.SetTexture("Blue");
+                }
+                if (rad == 2) {
+                    play.SetTexture("Brown");
+                }
+                if (rad == 3) {
+                    play.SetTexture("Green");
+                }
+                if (rad == 4) {
+                    play.SetTexture("Red");
+                }
+                if (rad == 5) {
+                    play.SetTexture("SkyBlue");
+                }
+            }
+            block = true;
             playerBX = Gdx.input.getX();
             playerBY = ColorzGame.HEIGHT - Gdx.input.getY() - 22.5f;     // sorry for the magic number
 
@@ -49,11 +77,6 @@ public class playState extends state{
                     play.SetPosition(new Vector3(playerX, playerY, 0));
                 }
             }
-
-
-            System.out.println(Gdx.input.getX() + " : " + Gdx.input.getY());
-            System.out.println(playerX + " : " + playerY);
-            System.out.println(play.GetPosition().x + " : " + play.GetPosition().y);
         }
 
     }
