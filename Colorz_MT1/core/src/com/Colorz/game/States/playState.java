@@ -1,8 +1,7 @@
 package com.Colorz.game.States;
 
-import com.Colorz.game.ClassDefinations.Player;
 import com.Colorz.game.ColorzGame;
-import com.Colorz.game.Obstacles.Barrier;
+import com.Colorz.game.BuildingBlocks.Block;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Texture;
@@ -17,14 +16,16 @@ import com.badlogic.gdx.math.Vector2;
 
 public class playState extends state{
 
-    private Texture player;
-    private Player play;
+    private Block play;
     private Texture BG;
-    private Barrier Test;
+    private Block Bar1;
+    private Block Bar2;
     private float playerX;
     private float playerY;
     private float playerBX;
     private float playerBY;
+
+    private float rots = 0;
     private  boolean block = false;
     private ShapeRenderer spr;
     private boolean inputtaken = false;
@@ -32,10 +33,10 @@ public class playState extends state{
     public playState(GameStatemanager gsm) {
         super(gsm);
 
-        Test = new Barrier(0,ColorzGame.HEIGHT, 200, 20, 0, ColourGen());
-        play = new Player(0,0,50, 50, "Red");
+        Bar1 = new Block(0,ColorzGame.HEIGHT, 500, 20, 0, ColourGen());
+        Bar2 = new Block(0,ColorzGame.HEIGHT, 500, 20, 0, ColourGen());
+        play = new Block(0,0,50, 50, 0,"Red");
         BG = new Texture("Black.jpg");
-        player = new Texture("Red.jpg");
         spr = new ShapeRenderer();
        //cam.setToOrtho(false, ColorzGame.WIDTH / 2, ColorzGame.HEIGHT / 2);
 
@@ -79,26 +80,40 @@ public class playState extends state{
     public void update(float dt) {
 
         handleInput();
-        Test.Update(dt);
+        Bar1.Update(dt);
+        Bar2.Update(dt);
         play.Update(dt);
 
-        if(Test.position.y < 0)
-        {
-            Test.SetTexture(ColourGen());
-            Test.position.y = Test.startPos.y;
+        if(Bar1.position.y < 0) {
+            Bar1.SetTexture(ColourGen());
+            Bar1.position.x = MathUtils.random(0, ColorzGame.WIDTH - Bar1.GetScale().x);
+            Bar1.position.y = Bar1.startPos.y;
         }
-        if(Test.position.x > ColorzGame.WIDTH)
-        {
-            Test.SetTexture(ColourGen());
-            Test.position.x = Test.startPos.x - Test.startScale.x;
-        }
-        Test.position.add(0, -2f);
 
-        if(Intersector.overlapConvexPolygons(play.getCollider(), Test.getCollider()))
+        Bar1.position.add(0, -10f);
+
+        if(Intersector.overlapConvexPolygons(play.getCollider(), Bar1.getCollider()))
         {
-            if(Test.ID != play.ID)
+            if(Bar1.ID != play.ID)
             {
-                Test.SetTexture(play.ID);
+                Bar1.SetTexture(play.ID);
+            }
+        }
+
+        if(Bar2.position.y < 0) {
+            Bar2.SetTexture(ColourGen());
+            Bar2.position.x = MathUtils.random(0, ColorzGame.WIDTH - Bar2.GetScale().x);
+            Bar2.position.y = Bar2.startPos.y;
+        }
+
+        Bar2.SetRotation(rots++);
+        Bar2.position.add(0, -5f);
+
+        if(Intersector.overlapConvexPolygons(play.getCollider(), Bar2.getCollider()))
+        {
+            if(Bar2.ID != play.ID)
+            {
+                Bar2.SetTexture(play.ID);
             }
         }
 
@@ -111,13 +126,14 @@ public class playState extends state{
       // sb.setProjectionMatrix(cam.combined);
         sb.begin();
         sb.draw(BG, 0, 0, ColorzGame.WIDTH, ColorzGame.HEIGHT);
-        Test.GetSprite().draw(sb);
+        Bar1.GetSprite().draw(sb);
+        Bar2.GetSprite().draw(sb);
         play.GetSprite().draw(sb);
         sb.end();
 
         //region Debugging
         spr.begin(ShapeRenderer.ShapeType.Line);
-        debugmode(Color.GREEN, Test.getCollider());
+        debugmode(Color.GREEN, Bar1.getCollider());
         debugmode( Color.RED, play.getCollider());
         spr.end();
         //endregion
@@ -158,7 +174,8 @@ public class playState extends state{
     @Override
     public void dispose() {
 
-        Test.GetTexture().dispose();
+        Bar1.GetTexture().dispose();
+        Bar2.GetTexture().dispose();
         play.GetTexture().dispose();
 
     }

@@ -1,30 +1,27 @@
-package com.Colorz.game.ClassDefinations;
+package com.Colorz.game.BuildingBlocks;
 
 import com.Colorz.game.ColorzGame;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.math.Polygon;
-import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
-import com.badlogic.gdx.math.Vector3;
 
-public class Player {
+public class Block {
 
-    private Vector2 position;
-    private Vector2 startPos;
+    public Vector2 position;
+    public Vector2 startPos;
     private Vector2 velocity;
     private Vector2 scale;
-    private Vector2 startScale;
+    public Vector2 startScale;
     public java.lang.String ID;
     public java.lang.String path;
     private Polygon col;
-    private float rotations = 0;
-
+    private float rotations = 10;
     private Texture barrier;
     private Sprite barriersp;
     private float verts[];
 
-    public Player (int x, int y, float scaleX, float scaleY, String skin)
+    public Block(int x, int y, float scaleX, float scaleY, float Roatats, java.lang.String skin)
     {
         ID = skin;
         position = new Vector2(x, y);
@@ -37,6 +34,7 @@ public class Player {
         barriersp = new Sprite(barrier);
         verts = new float[]{0,0,scale.x,0,scale.x,scale.y,0,scale.y};
         col = new Polygon(verts);
+        rotations = Roatats;
     }
 
     public void Update(float dt)
@@ -71,6 +69,7 @@ public class Player {
     {
         return position;
     }
+
     public void  SetPosition(Vector2 pos)
     {
         position = pos;
