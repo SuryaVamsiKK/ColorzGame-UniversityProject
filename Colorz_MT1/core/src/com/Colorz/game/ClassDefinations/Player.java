@@ -2,76 +2,107 @@ package com.Colorz.game.ClassDefinations;
 
 import com.Colorz.game.ColorzGame;
 import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.Sprite;
+import com.badlogic.gdx.math.Polygon;
 import com.badlogic.gdx.math.Rectangle;
+import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.math.Vector3;
 
 public class Player {
 
-    private Vector3 position;
-    private Vector3 startPos;
-    private Vector3 scale;
-    private Vector3 startScale;
+    private Vector2 position;
+    private Vector2 startPos;
+    private Vector2 velocity;
+    private Vector2 scale;
+    private Vector2 startScale;
     public java.lang.String ID;
     public java.lang.String path;
-    private Rectangle col;
+    private Polygon col;
+    private float rotations = 0;
 
-    private Texture player;
+    private Texture barrier;
+    private Sprite barriersp;
+    private float verts[];
 
     public Player (int x, int y, float scaleX, float scaleY, String skin)
     {
-        position = new Vector3(x, y, 0);
-        startPos = new Vector3(x, y, 0);
-        scale = new Vector3(scaleX, scaleY, 0);
-        startScale = new Vector3(scaleX, scaleY, 0);
         ID = skin;
+        position = new Vector2(x, y);
+        startPos = new Vector2(x, y);
+        scale = new Vector2(scaleX, scaleY);
+        startScale = new Vector2(scaleX, scaleY);
+        velocity = new Vector2(0, 0);
         path = skin + ColorzGame.TextureFormate;
-        player = new Texture(path);
-        col = new Rectangle(x, y, scaleX, scaleY);
+        barrier = new Texture(path);
+        barriersp = new Sprite(barrier);
+        verts = new float[]{0,0,scale.x,0,scale.x,scale.y,0,scale.y};
+        col = new Polygon(verts);
     }
 
     public void Update(float dt)
     {
         col.setPosition(position.x, position.y);
+        col.setOrigin(scale.x/2, scale.y/2);
+        barriersp.setPosition(position.x, position.y);
+        barriersp.setSize(scale.x, scale.y);
+        barriersp.setOrigin(scale.x/2, scale.y/2);
+        barriersp.setRotation(rotations);
+        col.setRotation(rotations);
     }
 
     public Texture GetTexture()
     {
-        return player;
+        return barriersp.getTexture();
     }
 
     public void SetTexture(String skin)
     {
-        if(player != null)
+        if(barrier != null)
         {
-            player.dispose();
+            barrier.dispose();
         }
         path = skin + ColorzGame.TextureFormate;
         ID = skin;
-        player = new Texture(path);
+        barrier = new Texture(path);
+        barriersp.setTexture(barrier);
     }
 
-    public Vector3 GetPosition()
+    public Vector2 GetPosition()
     {
         return position;
     }
-
-    public void  SetPosition(Vector3 pos)
+    public void  SetPosition(Vector2 pos)
     {
         position = pos;
     }
 
-    public Vector3 GetScale()
+    public Vector2 GetScale()
     {
         return scale;
     }
 
-    public void  SetScale(Vector3 scl)
+    public Sprite GetSprite()
+    {
+        return barriersp;
+    }
+
+    public void  SetScale(Vector2 scl)
     {
         scale = scl;
     }
 
-    public Rectangle getCollider()
+    public Polygon getCollider()
     {
         return col;
+    }
+
+    public void SetRotation(float gg)
+    {
+        rotations = gg;
+    }
+
+    public float GetRotation()
+    {
+        return rotations;
     }
 }
