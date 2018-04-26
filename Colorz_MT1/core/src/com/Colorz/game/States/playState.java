@@ -5,6 +5,7 @@ import com.Colorz.game.BuildingBlocks.Block;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.Colorz.game.ClassDefinations.GameStatemanager;
 import com.Colorz.game.ClassDefinations.state;
@@ -20,6 +21,7 @@ public class playState extends state{
     private Texture BG;
     private Block Bar1;
     private Block Bar2;
+    private int score = 0;
     private float playerX;
     private float playerY;
     private float playerBX;
@@ -27,6 +29,7 @@ public class playState extends state{
 
     private float rots = 0;
     private  boolean block = false;
+    BitmapFont font;
     private ShapeRenderer spr;
     private boolean inputtaken = false;
 
@@ -34,10 +37,11 @@ public class playState extends state{
         super(gsm);
 
         Bar1 = new Block(0,ColorzGame.HEIGHT, 500, 20, 0, ColourGen());
-        Bar2 = new Block(0,ColorzGame.HEIGHT, 500, 20, 0, ColourGen());
+        Bar2 = new Block(0,ColorzGame.HEIGHT, 300, 20, 0, ColourGen());
         play = new Block(0,0,50, 50, 0,"Red");
         BG = new Texture("Black.jpg");
         spr = new ShapeRenderer();
+        font = new BitmapFont();
        //cam.setToOrtho(false, ColorzGame.WIDTH / 2, ColorzGame.HEIGHT / 2);
 
     }
@@ -88,6 +92,7 @@ public class playState extends state{
             Bar1.SetTexture(ColourGen());
             Bar1.position.x = MathUtils.random(0, ColorzGame.WIDTH - Bar1.GetScale().x);
             Bar1.position.y = Bar1.startPos.y;
+            score++;
         }
 
         Bar1.position.add(0, -10f);
@@ -104,8 +109,8 @@ public class playState extends state{
             Bar2.SetTexture(ColourGen());
             Bar2.position.x = MathUtils.random(0, ColorzGame.WIDTH - Bar2.GetScale().x);
             Bar2.position.y = Bar2.startPos.y;
+            score++;
         }
-
         Bar2.SetRotation(rots++);
         Bar2.position.add(0, -5f);
 
@@ -123,12 +128,15 @@ public class playState extends state{
     @Override
     public void render(SpriteBatch sb) {
 
-      // sb.setProjectionMatrix(cam.combined);
+      //sb.setProjectionMatrix(cam.combined);
         sb.begin();
         sb.draw(BG, 0, 0, ColorzGame.WIDTH, ColorzGame.HEIGHT);
         Bar1.GetSprite().draw(sb);
         Bar2.GetSprite().draw(sb);
         play.GetSprite().draw(sb);
+        font.getData().setScale(1.2f, 1.2f);
+        font.setColor(Color.YELLOW);
+        font.draw(sb, "Score : " + score, 500,1030);
         sb.end();
 
         //region Debugging
