@@ -9,13 +9,11 @@ import com.badlogic.gdx.math.Vector2;
 
 public class Barrier {
 
-    private Vector2 position;
-    private Vector2 startPos;
+    public Vector2 position;
+    public Vector2 startPos;
     private Vector2 velocity;
     private Vector2 scale;
-    private Vector2 startScale;
-    private float hSpeed;
-    private float vSpeed;
+    public Vector2 startScale;
     public java.lang.String ID;
     public java.lang.String path;
     private Polygon col;
@@ -25,10 +23,8 @@ public class Barrier {
     private Sprite barriersp;
     private float verts[];
 
-    public Barrier(int x, int y, float scaleX, float scaleY, float Roatats,float HSpeed, float VSpeed, java.lang.String skin)
+    public Barrier(int x, int y, float scaleX, float scaleY, float Roatats, java.lang.String skin)
     {
-        hSpeed = HSpeed;
-        vSpeed = VSpeed;
         ID = skin;
         position = new Vector2(x, y);
         startPos = new Vector2(x, y);
@@ -41,7 +37,6 @@ public class Barrier {
         verts = new float[]{0,0,scale.x,0,scale.x,scale.y,0,scale.y};
         col = new Polygon(verts);
         rotations = Roatats;
-        //col = new Rectangle(x ,y, scaleX, scaleY);
     }
 
     public void Update(float dt)
@@ -53,16 +48,6 @@ public class Barrier {
         barriersp.setOrigin(scale.x/2, scale.y/2);
         barriersp.setRotation(rotations);
         col.setRotation(rotations);
-
-        if(position.y < 0)
-        {
-            position.y = startPos.y;
-        }
-        if(position.x > ColorzGame.WIDTH)
-        {
-            position.x = startPos.x - startScale.x;
-        }
-        position.add(hSpeed, vSpeed);
     }
 
     public Texture GetTexture()

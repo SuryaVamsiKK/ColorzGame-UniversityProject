@@ -32,11 +32,7 @@ public class playState extends state{
     public playState(GameStatemanager gsm) {
         super(gsm);
 
-        Test = new Barrier(0,ColorzGame.WIDTH, 200, 20, 0,0, -2f, "Brown");
-
-
-
-
+        Test = new Barrier(0,ColorzGame.HEIGHT, 200, 20, 0, ColourGen());
         play = new Player(0,0,50, 50, "Red");
         BG = new Texture("Black.jpg");
         player = new Texture("Red.jpg");
@@ -48,8 +44,6 @@ public class playState extends state{
     @Override
     protected void handleInput() {
 
-        rad = MathUtils.random(5);
-
         if(!Gdx.input.isTouched())
         {
             block = false;
@@ -58,28 +52,6 @@ public class playState extends state{
 
         if(Gdx.input.isTouched())
         {
-            if(block == false) {
-                if (rad == 0) {
-                    play.SetTexture("Yellow");
-                }
-                if (rad == 1) {
-                    play.SetTexture("Blue");
-                }
-                if (rad == 2) {
-                    play.SetTexture("Brown");
-                }
-                if (rad == 3) {
-                    play.SetTexture("Green");
-                }
-                if (rad == 4) {
-                    play.SetTexture("Red");
-                }
-                if (rad == 5) {
-                    play.SetTexture("SkyBlue");
-                }
-            }
-
-            block = true;
             playerBX = Gdx.input.getX();
             playerBY = ColorzGame.HEIGHT - Gdx.input.getY() - 22.5f;     // sorry for the magic number
             if(playerBX > play.GetPosition().x && playerBX < play.GetPosition().x + play.GetScale().x)
@@ -91,6 +63,11 @@ public class playState extends state{
             }
             if(inputtaken == true)
             {
+                if(block == false)
+                {
+                    play.SetTexture(ColourGen());
+                }
+                block = true;
                 playerX = Gdx.input.getX() - (play.GetScale().x/2);
                 playerY = ColorzGame.HEIGHT - Gdx.input.getY() - (play.GetScale().y/2) - 22.5f;     // sorry for the magic number
                 play.SetPosition(new Vector2(playerX, playerY));
@@ -104,6 +81,19 @@ public class playState extends state{
         handleInput();
         Test.Update(dt);
         play.Update(dt);
+
+        if(Test.position.y < 0)
+        {
+            Test.SetTexture(ColourGen());
+            Test.position.y = Test.startPos.y;
+        }
+        if(Test.position.x > ColorzGame.WIDTH)
+        {
+            Test.SetTexture(ColourGen());
+            Test.position.x = Test.startPos.x - Test.startScale.x;
+        }
+        Test.position.add(0, -2f);
+
         if(Intersector.overlapConvexPolygons(play.getCollider(), Test.getCollider()))
         {
             if(Test.ID != play.ID)
@@ -161,6 +151,8 @@ public class playState extends state{
         if (radbar == 5) {
             clr = "SkyBlue";
         }
+
+        return clr;
     }
 
     @Override
