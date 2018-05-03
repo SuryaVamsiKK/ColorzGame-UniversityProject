@@ -1,9 +1,8 @@
 package com.Colorz.game.States;
 
 import com.Colorz.game.ColorzGame;
-import com.Colorz.game.ClassDefinations.Block;
+import com.Colorz.game.BuildingBlocks.Block;
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.Preferences;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
@@ -27,7 +26,6 @@ public class playState extends state{
     private float playerY;
     private float playerBX;
     private float playerBY;
-    //private  scoring;
 
     private float rots = 0;
     private  boolean block = false;
@@ -38,7 +36,6 @@ public class playState extends state{
     public playState(GameStatemanager gsm) {
         super(gsm);
 
-        //scoring = Gdx.app.getPreferences("scoring");
         Bar1 = new Block(0,ColorzGame.HEIGHT, 500, 20, 0, ColourGen());
         Bar2 = new Block(0,ColorzGame.HEIGHT, 300, 20, 0, ColourGen());
         play = new Block(0,0,50, 50, 0,"Red");
@@ -46,7 +43,6 @@ public class playState extends state{
         spr = new ShapeRenderer();
         font = new BitmapFont();
        //cam.setToOrtho(false, ColorzGame.WIDTH / 2, ColorzGame.HEIGHT / 2);
-
 
     }
 
@@ -56,11 +52,7 @@ public class playState extends state{
         if(!Gdx.input.isTouched())
         {
             block = false;
-            if(inputtaken == true)
-            {
-               play.SetTexture(ColourGen());
-               inputtaken = false;
-            }
+            inputtaken = false;
         }
 
         if(Gdx.input.isTouched())
@@ -71,13 +63,20 @@ public class playState extends state{
             {
                 if(playerBY > play.GetPosition().y && playerBY < play.GetPosition().y + play.GetScale().y)
                 {
-                    inputtaken = true;
+                   inputtaken = true;
                 }
             }
-            playerX = Gdx.input.getX() - (play.GetScale().x/2);
-            playerY = ColorzGame.HEIGHT - Gdx.input.getY() - (play.GetScale().y/2) - 22.5f;     // sorry for the magic number
-            play.SetPosition(new Vector2(playerX, playerY));
-
+            if(inputtaken == true)
+            {
+                if(block == false)
+                {
+                    play.SetTexture(ColourGen());
+                }
+                block = true;
+                playerX = Gdx.input.getX() - (play.GetScale().x/2);
+                playerY = ColorzGame.HEIGHT - Gdx.input.getY() - (play.GetScale().y/2) - 22.5f;     // sorry for the magic number
+                play.SetPosition(new Vector2(playerX, playerY));
+            }
         }
     }
 
@@ -102,9 +101,7 @@ public class playState extends state{
         {
             if(Bar1.ID != play.ID)
             {
-                //Bar1.SetTexture(play.ID);
-                gsm.set(new Menu(gsm));
-                dispose();
+                Bar1.SetTexture(play.ID);
             }
         }
 
@@ -121,9 +118,7 @@ public class playState extends state{
         {
             if(Bar2.ID != play.ID)
             {
-                //Bar2.SetTexture(play.ID);
-                gsm.set(new Menu(gsm));
-                dispose();
+                Bar2.SetTexture(play.ID);
             }
         }
 
@@ -183,12 +178,6 @@ public class playState extends state{
 
         return clr;
     }
-
-   /* public void GameOver()
-    {
-        scoring.putInteger("Score", score);
-        scoring.flush();
-    }*/
 
     @Override
     public void dispose() {
