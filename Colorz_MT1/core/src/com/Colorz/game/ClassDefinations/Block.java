@@ -1,4 +1,4 @@
-package com.Colorz.game.BuildingBlocks;
+package com.Colorz.game.ClassDefinations;
 
 import com.Colorz.game.ColorzGame;
 import com.badlogic.gdx.graphics.Texture;
@@ -93,6 +93,11 @@ public class Block {
     public Polygon getCollider()
     {
         return col;
+    }
+
+    public void SetColliderScale(float X, float Y)
+    {
+        col.setScale(X, Y);
     }
 
     public void SetRotation(float gg)

@@ -2,10 +2,12 @@ package com.Colorz.game.States;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.Colorz.game.ClassDefinations.GameStatemanager;
 import com.Colorz.game.ClassDefinations.state;
 import com.Colorz.game.ColorzGame;
+import com.badlogic.gdx.math.MathUtils;
 
 /**
  * Created by SuryaVamsiKK on 3/12/2018.
@@ -15,14 +17,17 @@ public class Menu extends state {
 
     private Texture BG;
     private Texture PlayBtn;
-    float X = 500;
-    float Y = 500;
+    private Sprite PB;
 
     public Menu(GameStatemanager gsm) {
 
         super(gsm);
         BG = new Texture("SkyBlue.jpg");
         PlayBtn = new Texture("Green.jpg");
+        PB = new Sprite(PlayBtn);
+        PB.setScale(0.1f, 0.1f);
+        PB.setPosition(0,0);
+        PB.setCenter(0, 0);
     }
 
     @Override
@@ -46,8 +51,9 @@ public class Menu extends state {
     public void render(SpriteBatch sb)
     {
         sb.begin();
-        sb.draw(BG, 0, 0, ColorzGame.WIDTH, ColorzGame.HEIGHT);
-        sb.draw(PlayBtn, (ColorzGame.WIDTH / 2), (ColorzGame.HEIGHT / 2), X , Y);
+       // sb.draw(BG, 0, 0, ColorzGame.WIDTH, ColorzGame.HEIGHT);
+        PB.draw(sb);
+
         sb.end();
     }
 
@@ -56,6 +62,7 @@ public class Menu extends state {
 
         BG.dispose();
         PlayBtn.dispose();
+        PB.getTexture().dispose();
 
     }
 }
