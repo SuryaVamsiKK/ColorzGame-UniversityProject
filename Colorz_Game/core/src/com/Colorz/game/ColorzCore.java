@@ -13,6 +13,9 @@ public class ColorzCore extends ApplicationAdapter {
 
 	public static final int WIDTH = 607;
 	public static final int HEIGHT = 1080;
+
+	//public static final int WIDTH = 1080;
+	//public static final int HEIGHT = 1920;
 	public static String TextureFormate = ".jpg";
 
 	public static final String TITLE = "ColorZ";
