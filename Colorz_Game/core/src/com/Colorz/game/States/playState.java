@@ -3,6 +3,7 @@ package com.Colorz.game.States;
 import com.Colorz.game.ColorzCore;
 import com.Colorz.game.BuildingBlocks.Block;
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Preferences;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
@@ -21,7 +22,8 @@ public class playState extends state{
     private Texture BG;
     private Block Bar1;
     private Block Bar2;
-    private int score = 0;
+    public int score = 0;
+    public int highscore = 0;
     private float playerX;
     private float playerY;
     private float playerBX;
@@ -101,7 +103,8 @@ public class playState extends state{
         {
             if(Bar1.ID != play.ID)
             {
-                Bar1.SetTexture(play.ID);
+                //Bar1.SetTexture(play.ID);
+                gameOver();
             }
         }
 
@@ -118,10 +121,14 @@ public class playState extends state{
         {
             if(Bar2.ID != play.ID)
             {
-                Bar2.SetTexture(play.ID);
+                //Bar2.SetTexture(play.ID);
+                gameOver();
             }
         }
 
+        highscoreCheck(score);
+        highscore = getHighscore();
+        SetScore(score);
 
     }
 
@@ -137,6 +144,7 @@ public class playState extends state{
         font.getData().setScale(1.2f, 1.2f);
         font.setColor(Color.YELLOW);
         font.draw(sb, "Score : " + score, 500,1030);
+        font.draw(sb, "HighScore : " + highscore, 460,1000);
         sb.end();
 
         //region Debugging
@@ -151,6 +159,39 @@ public class playState extends state{
     {
         spr.setColor(clr);
         spr.polygon(ply.getTransformedVertices());
+    }
+
+    public void gameOver()
+    {
+        gsm.set(new GameOver(gsm));
+        dispose();
+    }
+
+    public void highscoreCheck(int currentScore)
+    {
+        int score;
+        Preferences prefs = Gdx.app.getPreferences("ColorzGame");
+        score = prefs.getInteger("Highscore");
+        if(currentScore > score)
+        {
+            prefs.putInteger("Highscore", currentScore);
+            prefs.flush();
+        }
+    }
+
+    public int getHighscore()
+    {
+        int score;
+        Preferences prefs = Gdx.app.getPreferences("ColorzGame");
+        score = prefs.getInteger("Highscore");
+        return score;
+    }
+
+    public void SetScore(int score)
+    {
+        Preferences prefs = Gdx.app.getPreferences("ColorzGame");
+        prefs.putInteger("Score", score);
+        prefs.flush();
     }
 
     public String ColourGen()
