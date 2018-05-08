@@ -7,20 +7,30 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Preferences;
 import com.badlogic.gdx.audio.Music;
 import com.badlogic.gdx.graphics.Color;
+import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.graphics.g2d.freetype.FreeTypeFontGenerator;
+import com.badlogic.gdx.utils.Align;
 
 public class GameOver extends state {
 
 
+    FreeTypeFontGenerator generator = new FreeTypeFontGenerator(Gdx.files.internal("AGENCYB.TTF"));
+    FreeTypeFontGenerator.FreeTypeFontParameter parameter = new FreeTypeFontGenerator.FreeTypeFontParameter();
     BitmapFont font;
     private int score;
     private int highscore;
+    private Texture BG;
     //private Music sd;
 
     public GameOver(GameStatemanager gsm) {
         super(gsm);
         font = new BitmapFont();
+        BG = new Texture("Black.jpg");
+        parameter.size = 60;
+        font = generator.generateFont(parameter);
+        generator.dispose();
         //sd = Gdx.audio.newMusic(Gdx.files.internal("Shader Graph Tutorial - Creating a Shader Graph [3⁄8] Live 2018⁄3⁄07.mp3"));
         //sd.setLooping(true);
         //sd.setVolume(1f);
@@ -31,11 +41,17 @@ public class GameOver extends state {
     @Override
     protected void handleInput() {
 
-        if(Gdx.input.isTouched())
+        if(Gdx.input.isTouched() && ColorzCore.touchPass == false)
         {
-            SetScore(0);
+            ColorzCore.touchPass = true;
+            ColorzCore.SetScore(0);
             gsm.set(new Menu(gsm));
             dispose();
+        }
+
+        if(!Gdx.input.isTouched())
+        {
+            ColorzCore.touchPass = false;
         }
 
     }
@@ -44,8 +60,8 @@ public class GameOver extends state {
     public void update(float dt) {
 
         handleInput();
-        score = getScore();
-        highscore = getHighscore();
+        score = ColorzCore.getScore();
+        highscore = ColorzCore.getHighscore();
 
     }
 
@@ -53,10 +69,12 @@ public class GameOver extends state {
     public void render(SpriteBatch sb) {
 
         sb.begin();
-        font.getData().setScale(1.2f, 1.2f);
+        sb.draw(BG, 0, 0, ColorzCore.AWIDTH, ColorzCore.AHEIGHT);
+        font.getData().setScale(1, 1);
+        font.setColor(Color.GREEN);
+        font.draw(sb, "Score : " + score, ColorzCore.AWIDTH/2, ColorzCore.AHEIGHT/2, 0, Align.center, true);
         font.setColor(Color.YELLOW);
-        font.draw(sb, "Score : " + score, 500,1030);
-        font.draw(sb, "HighScore : " + highscore, 460,1000);
+        font.draw(sb, "HighScore : " + highscore, ColorzCore.AWIDTH/2, ColorzCore.AHEIGHT/2 - 100, 0, Align.center, true);
         sb.end();
 
     }
@@ -64,30 +82,7 @@ public class GameOver extends state {
     @Override
     public void dispose() {
 
-    }
+        BG.dispose();
 
-
-    public int getHighscore()
-    {
-        int score;
-        Preferences prefs = Gdx.app.getPreferences("ColorzGame");
-        score = prefs.getInteger("Highscore");
-        return score;
-    }
-
-    public int getScore()
-    {
-        int score;
-        Preferences prefs = Gdx.app.getPreferences("ColorzGame");
-        score = prefs.getInteger("Score");
-        return score;
-    }
-
-
-    public void SetScore(int score)
-    {
-        Preferences prefs = Gdx.app.getPreferences("ColorzGame");
-        prefs.putInteger("Score", score);
-        prefs.flush();
     }
 }

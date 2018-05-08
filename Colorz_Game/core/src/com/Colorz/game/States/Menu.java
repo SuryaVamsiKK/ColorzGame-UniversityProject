@@ -1,5 +1,6 @@
 package com.Colorz.game.States;
 
+import com.Colorz.game.BuildingBlocks.Block;
 import com.Colorz.game.ColorzCore;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Texture;
@@ -14,24 +15,39 @@ import com.Colorz.game.ClassDefinations.state;
 public class Menu extends state {
 
     private Texture BG;
-    private Texture PlayBtn;
-    float X = 500;
-    float Y = 500;
+    private Block playButton;
+    private Block creditButton;
 
     public Menu(GameStatemanager gsm) {
 
         super(gsm);
-        BG = new Texture("SkyBlue.jpg");
-        PlayBtn = new Texture("Green.jpg");
+        BG = new Texture("Black.jpg");
+        playButton = new Block((ColorzCore.AWIDTH/2) - 110, (ColorzCore.AHEIGHT/2) - 50, 220, 100, 0, "Red");
+        creditButton = new Block((ColorzCore.AWIDTH/2) - 110, (ColorzCore.AHEIGHT/2) - 200 * ColorzCore.H, 220, 100, 0, "Yellow");
     }
 
     @Override
     public void handleInput() {
 
-        if(Gdx.input.justTouched())
+        if(!Gdx.input.justTouched())
         {
-            gsm.set(new playState(gsm));
-            dispose();
+            ColorzCore.touchPass = false;
+        }
+
+        if(Gdx.input.justTouched() && ColorzCore.touchPass == false)
+        {
+            ColorzCore.touchPass = true;
+            if(ColorzCore.isTouching(playButton.GetPosition().x, playButton.GetPosition().y, playButton.GetScale().x, playButton.GetScale().y) == true)
+            {
+                gsm.set(new playState(gsm));
+                dispose();
+            }
+
+            if(ColorzCore.isTouching(creditButton.GetPosition().x, creditButton.GetPosition().y, creditButton.GetScale().x, creditButton.GetScale().y) == true)
+            {
+                gsm.set(new CreditsState(gsm));
+                dispose();
+            }
         }
     }
 
@@ -39,6 +55,8 @@ public class Menu extends state {
     public void update(float dt) {
 
         handleInput();
+        playButton.Update(dt);
+        creditButton.Update(dt);
 
     }
 
@@ -46,8 +64,9 @@ public class Menu extends state {
     public void render(SpriteBatch sb)
     {
         sb.begin();
-        sb.draw(BG, 0, 0, ColorzCore.WIDTH, ColorzCore.HEIGHT);
-        sb.draw(PlayBtn, (ColorzCore.WIDTH / 2), (ColorzCore.HEIGHT / 2), X , Y);
+        sb.draw(BG, 0, 0, ColorzCore.AWIDTH, ColorzCore.AHEIGHT);
+        playButton.GetSprite().draw(sb);
+        creditButton.GetSprite().draw(sb);
         sb.end();
     }
 
@@ -55,7 +74,8 @@ public class Menu extends state {
     public void dispose() {
 
         BG.dispose();
-        PlayBtn.dispose();
+        playButton.GetTexture().dispose();
+        creditButton.GetTexture().dispose();
 
     }
 }

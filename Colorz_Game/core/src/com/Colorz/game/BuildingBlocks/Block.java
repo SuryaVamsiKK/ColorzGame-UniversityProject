@@ -21,13 +21,17 @@ public class Block {
     private Sprite barriersp;
     private float verts[];
 
-    public Block(int x, int y, float scaleX, float scaleY, float Roatats, java.lang.String skin)
+    public Block(float x, float y, float scaleX, float scaleY, float Roatats, java.lang.String skin)
     {
         ID = skin;
         position = new Vector2(x, y);
         startPos = new Vector2(x, y);
+        scaleX = scaleX * ColorzCore.W;
+        scaleY = scaleY * ColorzCore.H;
         scale = new Vector2(scaleX, scaleY);
-        startScale = new Vector2(scaleX, scaleY);
+        startScale = new Vector2(scaleX , scaleY);
+
+
         velocity = new Vector2(0, 0);
         path = skin + ColorzCore.TextureFormate;
         barrier = new Texture(path);
