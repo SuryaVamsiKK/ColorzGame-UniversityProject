@@ -22,8 +22,8 @@ public class Menu extends state {
 
         super(gsm);
         BG = new Texture("Black.jpg");
-        playButton = new Block((ColorzCore.AWIDTH/2) - 110, (ColorzCore.AHEIGHT/2) - 50, 220, 100, 0, "Red");
-        creditButton = new Block((ColorzCore.AWIDTH/2) - 110, (ColorzCore.AHEIGHT/2) - 200 * ColorzCore.H, 220, 100, 0, "Yellow");
+        playButton = new Block(ColorzCore.AWIDTH/2, (ColorzCore.AHEIGHT/2) - 50, 220, 100, 0, "Red");
+        creditButton = new Block(ColorzCore.AWIDTH/2, (ColorzCore.AHEIGHT/2) - 200 * ColorzCore.H, 220, 100, 0, "Yellow");
     }
 
     @Override
