@@ -2,6 +2,13 @@ buildscript {
     repositories {
         mavenCentral()
         maven { url "https://oss.sonatype.org/content/repositories/snapshots/" }
+        apply plugin: 'codenarc'
+        apply plugin: 'groovy'
+        apply plugin: 'java'
+        apply plugin: 'announce'
+        apply plugin: 'application'
+        apply plugin: 'maven'
+        google()
     }
     dependencies {
         classpath 'com.android.tools.build:gradle:2.2.0'

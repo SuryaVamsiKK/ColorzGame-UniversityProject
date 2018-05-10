@@ -58,7 +58,7 @@ public class playState extends state {
         generator.dispose();
         Bar1 = new Block(0,ColorzCore.AHEIGHT, 500, 50, 0, ColorzCore.ColourGen());
         Bar2 = new Block(0,ColorzCore.AHEIGHT, 300, 30, 0, ColorzCore.ColourGen());
-//        Bar3 = new Block(0,ColorzCore.AHEIGHT, 0, 30, 0, ColorzCore.ColourGen());
+//      Bar3 = new Block(0,ColorzCore.AHEIGHT, 0, 30, 0, ColorzCore.ColourGen());
         pauseB = new Block(525 * ColorzCore.W,980 * ColorzCore.H, 50, 50, 0, "Red");
         backB = new Block(25 * ColorzCore.W,980 * ColorzCore.H, 50, 50, 0, "SkyBlue");
         play = new Block(0,0,50, 50, 0,"Red");
