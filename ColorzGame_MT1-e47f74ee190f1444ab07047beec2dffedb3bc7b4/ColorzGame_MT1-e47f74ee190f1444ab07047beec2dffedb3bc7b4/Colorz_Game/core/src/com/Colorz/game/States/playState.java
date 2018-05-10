@@ -24,7 +24,7 @@ public class playState extends state {
     private Texture BG;
     private Block Bar1;
     private Block Bar2;
-    private Block Bar3;
+//    private Block Bar3;
     private Block pauseB;
     private Block backB;
     public int score = 0;
@@ -33,6 +33,7 @@ public class playState extends state {
     private float playerY;
     private float playerBX;
     private float playerBY;
+    private int check = 0;
     private float speed = 0.5f;
     private float speedS = 0.5f;
     private boolean speedSStrored = false;
@@ -44,7 +45,7 @@ public class playState extends state {
     private ShapeRenderer spr;
     private boolean inputtaken = false;
     private boolean dir = true;
-    private boolean dirS = true;
+//    private boolean dirS = true;
     FreeTypeFontGenerator generator = new FreeTypeFontGenerator(Gdx.files.internal("AGENCYB.TTF"));
     FreeTypeFontGenerator.FreeTypeFontParameter parameter = new FreeTypeFontGenerator.FreeTypeFontParameter();
     BitmapFont font15;
@@ -52,29 +53,15 @@ public class playState extends state {
 
     public playState(GameStatemanager gsm) {
         super(gsm);
-        parameter.size = 30;
+        parameter.size = 30 * (int)(ColorzCore.W * ColorzCore.W);
         font15 = generator.generateFont(parameter);
         generator.dispose();
         Bar1 = new Block(0,ColorzCore.AHEIGHT, 500, 50, 0, ColorzCore.ColourGen());
         Bar2 = new Block(0,ColorzCore.AHEIGHT, 300, 30, 0, ColorzCore.ColourGen());
-<<<<<<< HEAD
-<<<<<<< HEAD
-<<<<<<< HEAD
-//      Bar3 = new Block(0,ColorzCore.AHEIGHT, 0, 30, 0, ColorzCore.ColourGen());
-=======
-        Bar3 = new Block(0,ColorzCore.AHEIGHT, 0, 30, 0, ColorzCore.ColourGen());
->>>>>>> parent of e47f74e... few changes
-=======
-        Bar3 = new Block(0,ColorzCore.AHEIGHT, 0, 30, 0, ColorzCore.ColourGen());
->>>>>>> parent of e47f74e... few changes
-=======
-        Bar3 = new Block(0,ColorzCore.AHEIGHT, 0, 30, 0, ColorzCore.ColourGen());
->>>>>>> parent of e47f74e... few changes
+//        Bar3 = new Block(0,ColorzCore.AHEIGHT, 0, 30, 0, ColorzCore.ColourGen());
         pauseB = new Block(525 * ColorzCore.W,980 * ColorzCore.H, 50, 50, 0, "Red");
         backB = new Block(25 * ColorzCore.W,980 * ColorzCore.H, 50, 50, 0, "SkyBlue");
         play = new Block(0,0,50, 50, 0,"Red");
-/*        System.out.println(ColorzCore.W);
-        System.out.println(ColorzCore.H);*/
         BG = new Texture("Black.jpg");
         spr = new ShapeRenderer();
         //cam.setToOrtho(false, ColorzGame.WIDTH / 2, ColorzGame.HEIGHT / 2);
@@ -96,7 +83,6 @@ public class playState extends state {
             {
                 paused = !paused;
                 pauseTaken = true;
-//                System.out.println(paused);
                 if(paused == false)
                 {
                     speed = speedS;
@@ -115,19 +101,20 @@ public class playState extends state {
         {
             if (Gdx.input.isTouched()) {
                 playerBX = Gdx.input.getX();
-                playerBY = ColorzCore.AHEIGHT - Gdx.input.getY() - 22.5f;     // sorry for the magic number
-                if (playerBX > play.GetPosition().x && playerBX < play.GetPosition().x + play.GetScale().x) {
-                    if (playerBY > play.GetPosition().y && playerBY < play.GetPosition().y + play.GetScale().y) {
-                        inputtaken = true;
-                    }
+                playerBY = ColorzCore.AHEIGHT - Gdx.input.getY();
+
+                if(ColorzCore.isTouching(playerX, playerY, play.GetScale().x, play.GetScale().y))
+                {
+                    inputtaken = true;
                 }
+
                 if (inputtaken == true) {
                     if (block == false) {
                         play.SetTexture(ColorzCore.ColourGen());
                     }
                     block = true;
                     playerX = Gdx.input.getX() - (play.GetScale().x / 2);
-                    playerY = ColorzCore.AHEIGHT - Gdx.input.getY() - (play.GetScale().y / 2) - 22.5f;     // sorry for the magic number
+                    playerY = ColorzCore.AHEIGHT - Gdx.input.getY() - (play.GetScale().y / 2);
                     play.SetPosition(new Vector2(playerX, playerY));
                     ColorzCore.touchPass = true;
                 }
@@ -146,15 +133,13 @@ public class playState extends state {
         {
             speedS = speed;
             speedSStrored = true;
-//            System.out.println(ColorzCore.AHEIGHT);
             speed = 0;
         }
 
-//        System.out.println(ColorzCore.AHEIGHT);
         handleInput();
         Bar1.Update(dt);
         Bar2.Update(dt);
-        Bar3.Update(dt);
+//        Bar3.Update(dt);
         play.Update(dt);
         pauseB.Update(dt);
         backB.Update(dt);
@@ -221,23 +206,21 @@ public class playState extends state {
         highscore = ColorzCore.getHighscore();
         ColorzCore.SetScore(score);
         //endregion
-
+/*
         //region Bar2
         if(Bar3.position.y < 0) {
-
-            int check = 0;
 
             check = MathUtils.random(0, 1);
 
             if(check == 0)
             {
-                Bar3.position.x = 0;
-                Bar3.SetScale(new Vector2(Bar3.GetScale().x * -1, Bar3.GetScale().y * -1));
+                Bar3.SetPosition(new Vector2(0f ,ColorzCore.AHEIGHT + 10));
+                Bar3.SetScale(new Vector2(1, 1));
             }
             if(check == 1)
             {
-                Bar3.position.x = ColorzCore.AWIDTH;
-                Bar3.SetScale(new Vector2(-Bar3.GetScale().x, -Bar3.GetScale().y));
+                Bar3.SetPosition(new Vector2(ColorzCore.AWIDTH ,ColorzCore.AHEIGHT + 10));
+                Bar3.SetScale(new Vector2(1, 1));
             }
 
             Bar3.position.y = Bar3.startPos.y;
@@ -245,23 +228,39 @@ public class playState extends state {
             score++;
         }
 
+//        System.out.println(Bar3.GetScale().x);
 
-        if((Bar3.GetScale().x > (ColorzCore.AWIDTH - Bar3.GetScale().x)) && dirS == true)
+        if(Bar3.GetScale().x > ColorzCore.AWIDTH && dirS == true)
         {
             dirS = false;
         }
-        if(Bar3.GetScale().x < 20f && dirS == false)
+        if(Bar3.GetScale().x < -ColorzCore.AWIDTH && dirS == false)
         {
             dirS = true;
         }
-        if(dir)
+
+        if(dirS)
         {
-            Bar3.SetScale(new Vector2(Bar3.GetScale().x + 5f * speed, Bar3.GetScale().y));
+            if(check == 0)
+            {
+                Bar3.SetScale(new Vector2(Bar3.GetScale().x + 5f * speed, 30));
+            }
+            if(check == 1)
+            {
+                Bar3.SetScale(new Vector2(Bar3.GetScale().x - 5f * speed, 30));
+            }
         }
         else
+        { if(check == 0)
         {
-            Bar3.SetScale(new Vector2(Bar3.GetScale().x - 5f * speed, Bar3.GetScale().y));
+            Bar3.SetScale(new Vector2(Bar3.GetScale().x - 5f * speed, 30));
         }
+            if(check == 1)
+            {
+                Bar3.SetScale(new Vector2(Bar3.GetScale().x + 5f * speed, 30));
+            }
+        }
+
         Bar3.position.add(0, -7f * speed);
 
         if(Intersector.overlapConvexPolygons(play.getCollider(), Bar3.getCollider()))
@@ -278,6 +277,7 @@ public class playState extends state {
         highscore = ColorzCore.getHighscore();
         ColorzCore.SetScore(score);
         //endregion
+        */
     }
 
     @Override
@@ -288,14 +288,14 @@ public class playState extends state {
         sb.draw(BG, 0, 0, ColorzCore.AWIDTH, ColorzCore.AHEIGHT);
         Bar1.GetSprite().draw(sb);
         Bar2.GetSprite().draw(sb);
-        Bar3.GetSprite().draw(sb);
+//        Bar3.GetSprite().draw(sb);
         pauseB.GetSprite().draw(sb);
         backB.GetSprite().draw(sb);
         play.GetSprite().draw(sb);
         font15.getData().setScale(1, 1);
         font15.setColor(Color.YELLOW);
-        font15.draw(sb, "Score : " + score, 25 * ColorzCore.W,ColorzCore.AHEIGHT - 125);
-        font15.draw(sb, "HighScore : " + highscore, 25 * ColorzCore.W,ColorzCore.AHEIGHT - 175);
+        font15.draw(sb, "Score : " + score, 25 * ColorzCore.W,ColorzCore.AHEIGHT - 125 * ColorzCore.H);
+        font15.draw(sb, "HighScore : " + highscore, 25 * ColorzCore.W,ColorzCore.AHEIGHT - 175 * ColorzCore.H);
         sb.end();
 
         //region Debugging
@@ -323,11 +323,11 @@ public class playState extends state {
 
         Bar1.GetTexture().dispose();
         Bar2.GetTexture().dispose();
-        Bar3.GetTexture().dispose();
+//        Bar3.GetTexture().dispose();
         play.GetTexture().dispose();
         BG.dispose();
-        pauseB.GetTexture().dispose();
         backB.GetTexture().dispose();
 
+        pauseB.GetTexture().dispose();
     }
 }
