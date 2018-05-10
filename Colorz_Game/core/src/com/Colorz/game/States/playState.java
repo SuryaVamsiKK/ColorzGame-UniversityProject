@@ -58,7 +58,11 @@ public class playState extends state {
         Bar1 = new Block(0,ColorzCore.AHEIGHT, 500, 50, 0, ColorzCore.ColourGen());
         Bar2 = new Block(0,ColorzCore.AHEIGHT, 300, 30, 0, ColorzCore.ColourGen());
 <<<<<<< HEAD
+<<<<<<< HEAD
 //      Bar3 = new Block(0,ColorzCore.AHEIGHT, 0, 30, 0, ColorzCore.ColourGen());
+=======
+        Bar3 = new Block(0,ColorzCore.AHEIGHT, 0, 30, 0, ColorzCore.ColourGen());
+>>>>>>> parent of e47f74e... few changes
 =======
         Bar3 = new Block(0,ColorzCore.AHEIGHT, 0, 30, 0, ColorzCore.ColourGen());
 >>>>>>> parent of e47f74e... few changes
