@@ -23,6 +23,7 @@ public class ColorzCore extends ApplicationAdapter {
 	public static float AHEIGHT;
 
 	public static String TextureFormate = ".jpg";
+	public static boolean Mode = true;
 
 	public static final String TITLE = "ColorZ";
 	private GameStatemanager gsm;
